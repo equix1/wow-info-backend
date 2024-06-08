@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Raid {
+  id    Int    @id @default(autoincrement())
+  name  String
+  img   String?
+  boss RaidsOnBosses[]
+}
+
+model RaidsOnBosses {
+  raidId  Int
+  raid    Raid @relation(fields: [raidId], references: [id])
+  bossId  Int
+  boss    Boss    @relation(fields: [bossId], references: [id])
+
+  @@id([raidId, bossId])
+}
+
+model Boss {
+  id        Int    @id @default(autoincrement())
+  name      String
+  rank_us   Int
+  rank_eu   Int
+  rank_world Int
+  img       String?
+  raidId    Int
+  raid      RaidsOnBosses[]
+}
+
+model Spec {
+  id    Int    @id @default(autoincrement())
+  name  String
+  img   String
+  player Player?
+}
+
+model Class {
+  id    Int    @id @default(autoincrement())
+  name  String
+  color String
+  player Player?
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String
+  img   String
+  player Player?
+}
+
+model Player {
+  id      Int    @id @default(autoincrement())
+  name    String
+  specId  Int    @unique
+  spec    Spec   @relation(fields: [specId], references: [id])
+  classId Int    @unique
+  class   Class  @relation(fields: [classId], references: [id])
+  roleId  Int    @unique
+  role    Role   @relation(fields: [roleId], references: [id])
+  runs PlayersOnRuns[]
+}
+
+model Dungeon {
+  id    Int    @id @default(autoincrement())
+  name  String
+  timer Int
+  img   String?
+  runs Run[]
+}
+
+model Run {
+  id           Int    @id @default(autoincrement())
+  timer        Int
+  is_completed Boolean
+  date         DateTime
+  dungeonId    Int
+  dungeon      Dungeon   @relation(fields: [dungeonId], references: [id])
+  players      PlayersOnRuns[]
+}
+
+model PlayersOnRuns {
+  playerId  Int
+  player    Player @relation(fields: [playerId], references: [id])
+  runId     Int
+  run       Run    @relation(fields: [runId], references: [id])
+
+  @@id([playerId, runId])
+}
+
+model Title {
+  id        Int    @id @default(autoincrement())
+  region    String
+  rating    Int
+}
