@@ -64,6 +64,7 @@ model Role {
 model Player {
   id      Int    @id @default(autoincrement())
   name    String
+  rating  Int
   specId  Int    @unique
   spec    Spec   @relation(fields: [specId], references: [id])
   classId Int    @unique
@@ -97,6 +98,8 @@ model PlayersOnRuns {
   runId     Int
   run       Run    @relation(fields: [runId], references: [id])
 
+  createdAt DateTime @default(now())
+
   @@id([playerId, runId])
 }
 
@@ -104,4 +107,5 @@ model Title {
   id        Int    @id @default(autoincrement())
   region    String
   rating    Int
+  updatedAt DateTime @updatedAt
 }
