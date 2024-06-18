@@ -1,9 +1,9 @@
 import app from './app';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 import cron from 'node-cron';
-import { handleAccessToken } from './src/utils/blizzard/apiClient';
+import { handleAccessToken } from './src/module/blizzard/api';
 
-dotenv.config();
+// dotenv.config();
 
 cron.schedule('0 * * * *', handleAccessToken);
 

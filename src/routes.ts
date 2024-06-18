@@ -1,10 +1,6 @@
 // Imports all the component route
 import { Router } from 'express';
-// import raidRoutes from './routes/raidRoutes';
-// import dungeonRoutes from './routes/dungeonRoutes';
-// import playerRoutes from './routes/playerRoutes';
-// import ratingRoutes from './routes/ratingRoutes';
-// import errorHandler from './middleware/errorHandler';
+import { handleAccessToken } from '../src/module/blizzard/api';
 
 export const routes = Router();
 
@@ -13,13 +9,8 @@ routes.get('/', async (req, res) => {
     res.send('Welcome to the API');
 });
 
-routes.get('/test', async (req, res) => {
-    res.send('Test');
+// Get and validate the battle.net access token
+routes.get('/blizzard/accessToken/handle', async (req, res) => {
+    await handleAccessToken();
+    res.send(`The Battle.net access token was handled at: ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })}`);
 });
-
-
-// app.use('/api/raids', raidRoutes);
-// app.use('/api/dungeons', dungeonRoutes);
-// app.use('/api/players', playerRoutes);
-
-// app.use(errorHandler);
