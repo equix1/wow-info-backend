@@ -1,11 +1,11 @@
 import app from './app';
 // import dotenv from 'dotenv';
 import cron from 'node-cron';
-import { handleAccessToken } from './src/module/blizzard/api';
+import { handleBattleNetAccessToken } from './src/module/battlenet/api';
 
 // dotenv.config();
 
-cron.schedule('0 * * * *', handleAccessToken);
+cron.schedule('0 * * * *', handleBattleNetAccessToken);
 
 const PORT = process.env.PORT;
 

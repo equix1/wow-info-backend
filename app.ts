@@ -1,9 +1,9 @@
 import express from 'express';
-import { routes } from './src/routes';
+import { router } from './src/router';
 import './src/utils/expandEnv'; // Uses dotenv to expand .env
 
 const app = express();
 
-app.use(routes);
+app.use(router);
 
 export default app;
