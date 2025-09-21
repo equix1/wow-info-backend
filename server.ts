@@ -1,9 +1,9 @@
 import app from './app';
-// import dotenv from 'dotenv';
+import dotenv from 'dotenv';
 import cron from 'node-cron';
 import { handleBattleNetAccessToken } from './src/module/battlenet/api';
 
-// dotenv.config();
+dotenv.config();
 
 cron.schedule('0 * * * *', handleBattleNetAccessToken);
 

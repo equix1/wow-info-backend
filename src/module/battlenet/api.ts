@@ -1,4 +1,4 @@
-import { readConfig, updateConfig } from "../../../config/configManager";
+import { readConfig, updateConfig } from "../../config/configManager";
 
 const { BlizzAPI } = require("blizzapi");
 const { env } = process;

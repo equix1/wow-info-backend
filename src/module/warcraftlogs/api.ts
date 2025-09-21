@@ -1,8 +1,7 @@
-import { readConfig, updateConfig } from "../../../config/configManager";
+import { updateConfig } from "@/config/configManager";
+import axios from "axios";
 
 const { env } = process;
-
-import axios from "axios";
 
 export async function initializeWacraftLogsApi() {
   return {
@@ -13,7 +12,7 @@ export async function initializeWacraftLogsApi() {
   };
 }
 
-async function getAccessToken() {
+async function getAccessToken(): Promise<string> {
   const warcraftLogsApi = await initializeWacraftLogsApi();
   try {
     const response = await axios.post(
@@ -39,82 +38,4 @@ async function getAccessToken() {
 
 export async function handleWarcraftLogsAccessToken() {
   updateConfig({ warcraftLogsAccessToken: await getAccessToken() });
-}
-
-// Test function to see the API connection
-export async function getReports(
-  guildName: string,
-  serverName: string,
-  region: string
-) {
-  const warcraftLogsApi = await initializeWacraftLogsApi();
-  const query = `
-        #graphql
-        query RecentKills {
-            reportData {
-                reports(
-                zoneID: [ZONE_ID]
-                encounterID: [ENCOUNTER_ID]
-                difficulty: 4
-                killType: Kills
-                ) {
-                total  # Total number of kill reports
-                data {
-                    guild {
-                    id
-                    name
-                    }
-                }
-                }
-            }
-        }
-    `;
-  // vv Get Current ranking of the guild vv
-  // const query = `
-  //     query {
-  //         guildData{
-  //             guild(name: "${guildName}", serverSlug: "${serverName}", serverRegion: "${region}") {
-  //                 zoneRanking {
-  //                     progress {
-  //                         worldRank {
-  //                             number
-  //                             percentile
-  //                             color
-  //                         }
-  //                         regionRank {
-  //                             number
-  //                             percentile
-  //                             color
-  //                         }
-  //                         serverRank {
-  //                             number
-  //                             percentile
-  //                             color
-  //                         }
-  //                     }
-  //                 }
-  //             }
-  //         }
-  //     }
-  // `;
-
-  try {
-    const response = await axios.post(
-      `${warcraftLogsApi.baseUrl}`,
-      {
-        query: query,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${readConfig().warcraftLogsAccessToken}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    return response.data;
-  } catch (e) {
-    console.error("Error fetching reports:", e);
-    throw "e";
-  }
 }

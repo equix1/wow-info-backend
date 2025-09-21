@@ -1,12 +1,12 @@
 // Imports all the component route
 import { Router } from "express";
 import { handleBattleNetAccessToken } from "./module/battlenet/api";
-import {
-  handleWarcraftLogsAccessToken,
-  getReports,
-} from "./module/warcraftlogs/api";
+import { handleWarcraftLogsAccessToken } from "./module/warcraftlogs/api";
+import raidRoutes from './components/raid/routes'
 
 export const router = Router();
+
+router.use('/raid', raidRoutes);
 
 // Default route
 router.get("/", async (req, res) => {
@@ -33,19 +33,3 @@ router.get("/warcraftLogs/accessToken/handle", async (req, res) => {
     )}`
   );
 });
-
-// Test route for Warcraft Logs
-router.get(
-  "/reports/guild/:guildName/:serverName/:region",
-  async (req, res) => {
-    const { guildName, serverName, region } = req.params;
-    try {
-      const data = await getReports(guildName, serverName, region);
-      res.json(data);
-    } catch (error) {
-      res
-        .status(500)
-        .json({ error: "An error occurred while fetching reports" });
-    }
-  }
-);
