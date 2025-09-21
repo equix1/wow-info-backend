@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getReports } from "./services";
+import { getReports } from "./RaidServices";
 
 const raidRouter = Router();
 

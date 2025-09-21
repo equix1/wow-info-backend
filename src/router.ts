@@ -2,7 +2,7 @@
 import { Router } from "express";
 import { handleBattleNetAccessToken } from "./module/battlenet/api";
 import { handleWarcraftLogsAccessToken } from "./module/warcraftlogs/api";
-import raidRoutes from './components/raid/routes'
+import raidRoutes from './components/raid/RaidRoutes'
 
 export const router = Router();
 
